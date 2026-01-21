@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>PT Personal Coach – Full System</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="manifest.json">
+<style>
+:root{
+ --bg:#0e0e0e;--card:#1a1a1a;--main:#4CAF50;--accent:#ff9800;--done:#2e7d32
+}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,Roboto;background:var(--bg);color:#eee}
+header{padding:14px;background:#111;border-bottom:1px solid #222}
+header h1{margin:0;font-size:18px;color:var(--main)}
+header p{margin:4px 0 0;font-size:13px;color:#aaa}
+main{padding:14px 14px 120px}
+.session{font-size:18px;margin-bottom:10px}
+.exercise{background:var(--card);padding:14px;border-radius:12px;margin-bottom:12px}
+.exercise.done{background:var(--done);color:#c8e6c9}
+.exercise h3{margin:0 0 6px;font-size:16px}
+.exercise small{color:#bbb}
+.exercise button{width:100%;margin-top:10px;padding:12px;font-weight:700;
+ background:var(--main);border:none;border-radius:10px}
+footer{position:fixed;bottom:0;left:0;right:0;background:#111;
+ border-top:1px solid #222;padding:12px}
+#timer{text-align:center;font-size:26px;color:var(--accent)}
+footer button{width:100%;margin-top:10px;padding:14px;font-size:16px;
+ font-weight:800;background:var(--accent);border:none;border-radius:12px}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>🏋️ PT PERSONAL COACH</h1>
+  <p id="info"></p>
+</header>
+
+<main>
+  <div class="session" id="session"></div>
+  <div id="workout"></div>
+</main>
+
+<footer>
+  <div id="timer">--</div>
+  <button onclick="startRest()">BẮT ĐẦU NGHỈ</button>
+</footer>
+
+<script>
+// ===== SERVICE WORKER =====
+if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}
+
+// ===== TIME & WEEK =====
+const START_KEY="pt_start";
+if(!localStorage.getItem(START_KEY)){
+ localStorage.setItem(START_KEY,new Date().toISOString());
+}
+const start=new Date(localStorage.getItem(START_KEY));
+const now=new Date();
+const week=Math.floor((now-start)/(1000*60*60*24*7))+1;
+const deload=(week%5===0);
+
+const days=["CN","T2","T3","T4","T5","T6","T7"];
+document.getElementById("info").innerText=
+`${days[now.getDay()]} – ${now.toLocaleDateString()} | Tuần ${week}${deload?" (DELOAD)":""}`;
+
+// ===== PROGRAM =====
+const plan={
+1:{t:"PUSH – Ngực & Vai",e:[
+{n:"Floor Press",b:10,t:"c",r:90},
+{n:"Shoulder Press",b:8,t:"c",r:90},
+{n:"Lateral Raise 4kg",b:15,t:"i",r:60},
+{n:"Close-grip Press",b:10,t:"c",r:75},
+{n:"Triceps Extension",b:12,t:"i",r:60}
+]},
+2:{t:"PULL – Lưng rộng",e:[
+{n:"One-arm Row",b:12,t:"c",r:90},
+{n:"Pullover",b:12,t:"c",r:75},
+{n:"Hammer Curl",b:10,t:"i",r:60},
+{n:"Concentration Curl",b:15,t:"i",r:45}
+]},
+3:{t:"ACTIVE RECOVERY",e:[
+{n:"Giãn cơ + thở",b:10,t:"r",r:30}
+]},
+4:{t:"PUSH – Vai (Side Press)",e:[
+{n:"Side Press 4kg",b:15,t:"c",r:75},
+{n:"Arnold Press",b:8,t:"c",r:90},
+{n:"Leaning Raise",b:20,t:"i",r:60}
+]},
+5:{t:"PULL – Lưng dày",e:[
+{n:"Deadlift DB",b:8,t:"c",r:120},
+{n:"Reverse Row",b:10,t:"c",r:90},
+{n:"Shrugs",b:15,t:"i",r:75}
+]},
+6:{t:"CORE",e:[
+{n:"Plank (giây)",b:90,t:"core",r:45},
+{n:"Leg Raise",b:15,t:"core",r:45}
+]},
+0:{t:"NGHỈ HOÀN TOÀN",e:[]}
+};
+
+const today=now.getDay();
+document.getElementById("session").innerText=plan[today].t;
+
+let currentRest=60;
+
+// ===== RENDER =====
+plan[today].e.forEach((x,i)=>{
+ let inc=0;
+ if(!deload){
+  if(x.t==="c") inc=week-1;
+  if(x.t==="i") inc=(week-1)*2;
+ }
+ const reps=x.b+inc;
+ const d=document.createElement("div");
+ d.className="exercise"; d.id="ex"+i;
+ d.innerHTML=`
+  <h3>${x.n}</h3>
+  <small>Mục tiêu: ${reps} | Nghỉ: ${x.r}s</small>
+  <button onclick="done(${i},${x.r})">HOÀN THÀNH</button>`;
+ document.getElementById("workout").appendChild(d);
+});
+
+// ===== ACTION =====
+function done(i,r){
+ document.getElementById("ex"+i).classList.add("done");
+ currentRest=r;
+}
+
+function startRest(){
+ let t=currentRest;
+ const timer=document.getElementById("timer");
+ timer.innerText=t+"s";
+ const x=setInterval(()=>{
+  t--; timer.innerText=t+"s";
+  if(t<=0){
+   clearInterval(x);
+   timer.innerText="HẾT NGHỈ";
+   navigator.vibrate?.(200);
+  }
+ },1000);
+}
+</script>
+</body>
+</html>
