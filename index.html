@@ -16,16 +16,24 @@ header p{margin:4px 0 0;font-size:13px;color:#aaa}
 main{padding:14px 14px 120px}
 .session{font-size:18px;margin-bottom:10px}
 .exercise{background:var(--card);padding:14px;border-radius:12px;margin-bottom:12px}
+.exercise.locked{opacity:0.3}
 .exercise.done{background:var(--done);color:#c8e6c9}
 .exercise h3{margin:0 0 6px;font-size:16px}
 .exercise small{color:#bbb}
-.exercise button{width:100%;margin-top:10px;padding:12px;font-weight:700;
- background:var(--main);border:none;border-radius:10px}
-footer{position:fixed;bottom:0;left:0;right:0;background:#111;
- border-top:1px solid #222;padding:12px}
+.exercise button{
+ width:100%;margin-top:10px;padding:12px;font-weight:700;
+ background:var(--main);border:none;border-radius:10px
+}
+.exercise button:disabled{background:#555;color:#222}
+footer{
+ position:fixed;bottom:0;left:0;right:0;
+ background:#111;border-top:1px solid #222;padding:12px
+}
 #timer{text-align:center;font-size:26px;color:var(--accent)}
-footer button{width:100%;margin-top:10px;padding:14px;font-size:16px;
- font-weight:800;background:var(--accent);border:none;border-radius:12px}
+footer button{
+ width:100%;margin-top:10px;padding:14px;font-size:16px;
+ font-weight:800;background:var(--accent);border:none;border-radius:12px
+}
 </style>
 </head>
 
@@ -46,8 +54,10 @@ footer button{width:100%;margin-top:10px;padding:14px;font-size:16px;
 </footer>
 
 <script>
-// ===== SERVICE WORKER =====
-if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js");}
+// ===== PWA =====
+if("serviceWorker" in navigator){
+ navigator.serviceWorker.register("sw.js");
+}
 
 // ===== TIME & WEEK =====
 const START_KEY="pt_start";
@@ -101,7 +111,9 @@ const plan={
 const today=now.getDay();
 document.getElementById("session").innerText=plan[today].t;
 
-let currentRest=60;
+let currentIndex=0;
+let currentRest=0;
+let restInterval=null;
 
 // ===== RENDER =====
 plan[today].e.forEach((x,i)=>{
@@ -111,33 +123,55 @@ plan[today].e.forEach((x,i)=>{
   if(x.t==="i") inc=(week-1)*2;
  }
  const reps=x.b+inc;
+
  const d=document.createElement("div");
- d.className="exercise"; d.id="ex"+i;
+ d.className="exercise"+(i!==0?" locked":"");
+ d.id="ex"+i;
  d.innerHTML=`
   <h3>${x.n}</h3>
   <small>Mục tiêu: ${reps} | Nghỉ: ${x.r}s</small>
-  <button onclick="done(${i},${x.r})">HOÀN THÀNH</button>`;
+  <button ${i!==0?"disabled":""}
+   onclick="completeExercise(${i},${x.r})">
+   HOÀN THÀNH
+  </button>`;
  document.getElementById("workout").appendChild(d);
 });
 
-// ===== ACTION =====
-function done(i,r){
+// ===== LOGIC =====
+function completeExercise(i,r){
+ if(i!==currentIndex) return;
  document.getElementById("ex"+i).classList.add("done");
  currentRest=r;
+ startRest();
 }
 
 function startRest(){
+ clearInterval(restInterval);
  let t=currentRest;
  const timer=document.getElementById("timer");
  timer.innerText=t+"s";
- const x=setInterval(()=>{
+
+ restInterval=setInterval(()=>{
   t--; timer.innerText=t+"s";
   if(t<=0){
-   clearInterval(x);
-   timer.innerText="HẾT NGHỈ";
+   clearInterval(restInterval);
+   timer.innerText="HẾT NGHỈ – QUA BÀI";
    navigator.vibrate?.(200);
+   openNext();
   }
  },1000);
+}
+
+function openNext(){
+ const cur=document.getElementById("ex"+currentIndex);
+ cur.querySelector("button").disabled=true;
+
+ currentIndex++;
+ const next=document.getElementById("ex"+currentIndex);
+ if(!next) return;
+
+ next.classList.remove("locked");
+ next.querySelector("button").disabled=false;
 }
 </script>
 </body>
