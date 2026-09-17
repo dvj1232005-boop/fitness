@@ -757,7 +757,7 @@
 
         <div class="pay-body">
             <div class="pay-tag">XÁC THỰC THANH TOÁN NGÂN HÀNG</div>
-            <div class="pay-price" id="displayPaymentAmount">9.000đ</div>
+            <div class="pay-price" id="displayPaymentAmount">499.000đ</div>
             <div class="pay-sub-billing">THANH TOÁN 1 LẦN · KÍCH HOẠT UNLOCK OFF</div>
 
             <!-- Khung QR Nền Trắng Sạch Chuẩn Quét Camera (VietQR Techcombank) -->
@@ -787,7 +787,7 @@
                 <div class="bank-row">
                     <span class="bank-label">Số tiền</span>
                     <div class="bank-val-group">
-                        <span class="bank-value highlight" id="displayTransferAmount">9.000đ</span>
+                        <span class="bank-value highlight" id="displayTransferAmount">499.000đ</span>
                         <button class="copy-btn" id="copyAmountBtn" type="button">Sao chép</button>
                     </div>
                 </div>
@@ -829,14 +829,14 @@
 
 <script type="module">
     // =========================================================
-    // CẤU HÌNH THANH TOÁN TẬP TRUNG (TECHCOMBANK - 9.000đ)
+    // CẤU HÌNH THANH TOÁN TẬP TRUNG (TECHCOMBANK - 499.000đ)
     // =========================================================
     const PAYMENT_CONFIG = {
         bankId: "TCB",                  // Mã ngân hàng Techcombank chuẩn VietQR
         bankName: "Techcombank",
         accountNumber: "8866823055",     // Số tài khoản người nhận
         accountName: "Dao Dang Tung",   // Chủ tài khoản
-        amount: 9000,                   // 9.000đ
+        amount: 499000,                 // 499.000đ
         content: "UNLOCK-DKCL"          // Nội dung chuyển khoản chuẩn
     };
 
@@ -1175,7 +1175,7 @@
     }
 
     // =========================================================
-    // 09. FLOW THANH TOÁN QR NGÂN HÀNG (TECHCOMBANK - 3.000đ)
+    // 09. FLOW THANH TOÁN QR NGÂN HÀNG (TECHCOMBANK - 499.000đ)
     // =========================================================
     const paywallModal = document.getElementById('paywallModal');
     const closePaywallBtn = document.getElementById('closePaywallBtn');
@@ -1357,8 +1357,8 @@
 
             setTimeout(() => {
                 isVerifyingState = false;
-                setPaymentStatusUI('PENDING', 'Chưa nhận được giao dịch 3.000đ. Vui lòng kiểm tra lại nội dung CK.');
-                showToast("Chưa thấy tiền vào tài khoản Techcombank. Vui lòng chuyển đúng 3.000đ với cú pháp UNLOCK-DKCL.", "warning");
+                setPaymentStatusUI('PENDING', 'Chưa nhận được giao dịch 499.000đ. Vui lòng kiểm tra lại nội dung CK.');
+                showToast("Chưa thấy tiền vào tài khoản Techcombank. Vui lòng chuyển đúng 499.000đ với cú pháp UNLOCK-DKCL.", "warning");
             }, 1200);
 
         } catch(err) {
