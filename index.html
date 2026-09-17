@@ -358,154 +358,186 @@
         .support-modal p { font-size: 13.5px; color: var(--text-muted); line-height: 1.6; font-weight: 500; }
 
         /* =========================================================
-           11. REDESIGNED ONE-SURFACE PAYMENT FLOW (IPHONE FIRST)
+           11. VIETNAMESE QR BANKING CHECKOUT FLOW (ONE-SURFACE UI)
         ========================================================= */
         .paywall-modal {
             position: fixed; inset: 0; width: 100vw; height: 100vh; height: 100dvh;
-            background: rgba(3, 4, 8, 0.88); backdrop-filter: blur(28px); -webkit-backdrop-filter: blur(28px);
+            background: rgba(3, 4, 8, 0.92); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
             z-index: 9999999; display: flex; align-items: center; justify-content: center;
             opacity: 0; visibility: hidden; pointer-events: none;
-            transition: opacity 0.32s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.32s;
+            transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.3s;
             user-select: none;
         }
         .paywall-modal:not(.hidden) {
             opacity: 1; visibility: visible; pointer-events: auto;
         }
 
-        /* Bề mặt thanh toán duy nhất (Single Continuous Surface) */
         .payment-surface {
-            position: relative; width: 100%; max-width: 430px; height: 100%;
+            position: relative; width: 100%; max-width: 440px; height: 100%;
             display: flex; flex-direction: column; justify-content: space-between;
-            padding: calc(max(20px, env(safe-area-inset-top)) + 4px) 24px max(24px, env(safe-area-inset-bottom)) 24px;
+            padding: calc(max(16px, env(safe-area-inset-top)) + 4px) 20px max(20px, env(safe-area-inset-bottom)) 20px;
             color: #f8fafc; overflow-y: auto; overscroll-behavior: contain;
             transform: translateY(18px) scale(0.98);
-            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .paywall-modal:not(.hidden) .payment-surface {
             transform: translateY(0) scale(1);
         }
 
-        /* Ánh hào quang vàng mờ chìm sâu trong nền */
         .payment-surface::before {
-            content: ''; position: absolute; top: 12%; left: 50%; transform: translateX(-50%);
+            content: ''; position: absolute; top: 10%; left: 50%; transform: translateX(-50%);
             width: 320px; height: 260px;
-            background: radial-gradient(circle, rgba(243, 234, 105, 0.16) 0%, rgba(243, 234, 105, 0.03) 60%, transparent 80%);
+            background: radial-gradient(circle, rgba(243, 234, 105, 0.12) 0%, transparent 75%);
             pointer-events: none; z-index: 0;
         }
         .payment-surface > * { position: relative; z-index: 1; }
 
-        /* Header tinh gọn */
         .pay-header {
             display: flex; justify-content: space-between; align-items: center;
-            width: 100%; margin-bottom: 24px;
+            width: 100%; margin-bottom: 12px;
         }
         .pay-brand {
             display: flex; align-items: center; gap: 8px;
-            font-size: 14px; font-weight: 700; letter-spacing: 0.2px;
-            color: #d1cc87;
+            font-size: 14px; font-weight: 800; letter-spacing: 0.3px;
+            color: #ede68a;
         }
-        .pay-brand svg { width: 15px; height: 15px; stroke: #d1cc87; }
+        .pay-brand svg { width: 16px; height: 16px; stroke: #ede68a; }
         .pay-close-btn {
             background: rgba(255, 255, 255, 0.08); border: none;
-            color: #94a3b8; width: 32px; height: 32px; border-radius: 50%;
+            color: #94a3b8; width: 34px; height: 34px; border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             cursor: pointer; transition: all 0.2s ease;
         }
-        .pay-close-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.15); color: #fff; }
+        .pay-close-btn:active { transform: scale(0.9); background: rgba(255, 255, 255, 0.16); color: #fff; }
 
-        /* Khối nội dung thanh toán trọng tâm */
         .pay-body {
             display: flex; flex-direction: column; align-items: center; text-align: center;
             margin: auto 0; width: 100%;
         }
 
         .pay-tag {
-            font-size: 11px; font-weight: 700; letter-spacing: 1.8px;
-            color: #ede68a; text-transform: uppercase; margin-bottom: 8px;
-            opacity: 0.9;
+            font-size: 11px; font-weight: 800; letter-spacing: 1.8px;
+            color: #ede68a; text-transform: uppercase; margin-bottom: 4px;
         }
 
         .pay-price {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 68px; font-weight: 800; color: #f3ea69;
-            letter-spacing: -2px; line-height: 1; margin: 4px 0;
-            text-shadow: 0 4px 28px rgba(243, 234, 105, 0.35);
+            font-size: 42px; font-weight: 800; color: #f3ea69;
+            letter-spacing: -1px; line-height: 1.1; margin: 4px 0 2px 0;
+            text-shadow: 0 4px 20px rgba(243, 234, 105, 0.35);
         }
 
         .pay-sub-billing {
-            font-size: 11.5px; font-weight: 700; letter-spacing: 1.5px;
-            color: #a8a29e; text-transform: uppercase; margin-bottom: 24px;
+            font-size: 11px; font-weight: 700; letter-spacing: 1.3px;
+            color: #94a3b8; text-transform: uppercase; margin-bottom: 16px;
         }
 
-        .pay-lead {
-            font-size: 15px; line-height: 1.5; color: #cbd5e1;
-            max-width: 320px; margin-bottom: 28px; font-weight: 500;
+        /* KHUNG QR CHUẨN NGÂN HÀNG: Nền trắng sạch, không làm mờ, không dính filter */
+        .qr-clean-container {
+            width: 210px; height: 210px; background: #ffffff;
+            border-radius: 20px; padding: 10px; margin: 0 auto 16px;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.15);
+            position: relative;
+        }
+        .qr-clean-container img {
+            width: 100%; height: 100%; object-fit: contain; border-radius: 12px;
+            display: block; opacity: 1 !important; filter: none !important;
+        }
+        .qr-placeholder {
+            font-size: 11px; font-weight: 700; color: #0f172a; text-align: center;
         }
 
-        /* Danh sách quyền lợi liền mạch */
-        .pay-benefits {
-            display: flex; flex-direction: column; gap: 14px;
-            width: 100%; max-width: 330px; text-align: left;
-            margin-bottom: 12px;
+        .pay-guide {
+            font-size: 12.5px; color: #cbd5e1; margin-bottom: 16px; font-weight: 500;
         }
-        .pay-benefit-item {
-            display: flex; align-items: center; gap: 12px;
-            font-size: 14px; color: #e2e8f0; font-weight: 500;
-        }
-        .pay-check-icon {
-            width: 20px; height: 20px; border-radius: 50%;
-            background: rgba(243, 234, 105, 0.12); color: #f3ea69;
-            display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-        }
-        .pay-check-icon svg { width: 12px; height: 12px; stroke: currentColor; }
 
-        /* Cụm hành động CTA liền khối */
+        /* Bảng thông tin chuyển khoản kèm nút sao chép */
+        .bank-info-sheet {
+            width: 100%; max-width: 360px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.09);
+            border-radius: 18px; padding: 12px 14px;
+            display: flex; flex-direction: column; gap: 9px;
+            margin-bottom: 14px; text-align: left;
+        }
+        .bank-row {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 12.5px;
+        }
+        .bank-label { color: #94a3b8; font-weight: 600; font-size: 11.5px; }
+        .bank-val-group {
+            display: flex; align-items: center; gap: 8px;
+        }
+        .bank-value {
+            color: #f8fafc; font-weight: 700; font-family: 'JetBrains Mono', monospace; font-size: 12.5px;
+        }
+        .bank-value.highlight { color: #f3ea69; font-weight: 800; }
+        .copy-btn {
+            background: rgba(243, 234, 105, 0.15); border: 1px solid rgba(243, 234, 105, 0.3);
+            color: #f3ea69; font-size: 10.5px; font-weight: 700; padding: 2px 7px;
+            border-radius: 6px; cursor: pointer; transition: all 0.15s ease;
+        }
+        .copy-btn:active { transform: scale(0.92); background: rgba(243, 234, 105, 0.3); }
+
+        /* Khối trạng thái giao dịch */
+        .tx-status-banner {
+            width: 100%; max-width: 360px; padding: 10px 14px; border-radius: 14px;
+            font-size: 12px; font-weight: 700; display: flex; align-items: center;
+            justify-content: center; gap: 8px; margin-bottom: 12px;
+            transition: all 0.25s ease;
+        }
+        .tx-status-banner.is-pending {
+            background: rgba(245, 158, 11, 0.12); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3);
+        }
+        .tx-status-banner.is-verifying {
+            background: rgba(59, 130, 246, 0.14); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+        .tx-status-banner.is-success {
+            background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4);
+        }
+        .tx-status-banner.is-failed {
+            background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4);
+        }
+
         .pay-actions {
             display: flex; flex-direction: column; align-items: center;
-            gap: 14px; width: 100%; margin-top: 24px;
+            gap: 10px; width: 100%; max-width: 360px; margin: 0 auto;
         }
-
-        .pay-cta-btn {
-            width: 100%; height: 54px;
+        .pay-primary-btn {
+            width: 100%; height: 50px;
             background: linear-gradient(180deg, #faef76 0%, #ecd955 100%);
-            color: #1a1600; border: none; border-radius: 18px;
-            font-family: inherit; font-size: 16px !important; font-weight: 800;
+            color: #1a1600; border: none; border-radius: 16px;
+            font-family: inherit; font-size: 15px !important; font-weight: 800;
             letter-spacing: -0.2px; cursor: pointer;
-            box-shadow: 0 4px 24px rgba(241, 234, 108, 0.35);
-            display: flex; align-items: center; justify-content: center;
-            transition: transform 0.12s ease, filter 0.15s ease, box-shadow 0.15s ease;
+            box-shadow: 0 4px 20px rgba(241, 234, 108, 0.35);
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: transform 0.12s ease, filter 0.15s ease;
         }
-        .pay-cta-btn:hover { filter: brightness(1.03); }
-        .pay-cta-btn:active {
-            transform: scale(0.975);
-            box-shadow: 0 2px 12px rgba(241, 234, 108, 0.25);
-            filter: brightness(0.96);
+        .pay-primary-btn:active { transform: scale(0.97); filter: brightness(0.96); }
+        .pay-primary-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .pay-secondary-btn {
+            width: 100%; height: 44px; background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15); border-radius: 14px;
+            color: #f8fafc; font-size: 13.5px !important; font-weight: 700;
+            cursor: pointer; transition: all 0.2s ease;
         }
-        .pay-cta-btn.is-processing {
-            pointer-events: none; opacity: 0.85; filter: grayscale(0.2);
-        }
+        .pay-secondary-btn:active { transform: scale(0.97); background: rgba(255, 255, 255, 0.14); }
 
         .pay-dismiss-link {
-            background: transparent; border: none;
-            color: #64748b; font-size: 13px; font-weight: 600;
-            cursor: pointer; padding: 4px 12px; transition: color 0.2s ease;
+            background: transparent; border: none; color: #64748b; font-size: 12.5px;
+            font-weight: 600; cursor: pointer; padding: 4px 10px; transition: color 0.2s;
         }
         .pay-dismiss-link:hover, .pay-dismiss-link:active { color: #cbd5e1; }
 
-        .pay-legal {
-            font-size: 10px; color: #475569; text-align: center;
-            line-height: 1.45; letter-spacing: 0.1px; max-width: 320px;
-        }
-
-        /* Desktop Container */
         @media (min-width: 601px) {
             .payment-surface {
-                height: auto; max-height: 92vh;
-                border-radius: 36px;
-                border: 1px solid rgba(243, 234, 105, 0.18);
-                background: rgba(11, 13, 20, 0.85);
-                box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-                padding: 36px 32px 28px 32px;
+                height: auto; max-height: 94vh; border-radius: 34px;
+                border: 1px solid rgba(243, 234, 105, 0.2);
+                background: rgba(11, 13, 20, 0.92);
+                box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.95);
+                padding: 30px 28px 24px 28px;
             }
         }
     </style>
@@ -705,19 +737,18 @@
 </div>
 
 <!-- =========================================================
-     MÀN HÌNH THANH TOÁN LIỀN KHỐI (ONE CONTINUOUS SURFACE)
+     MÀN HÌNH THANH TOÁN QR NGÂN HÀNG (VIETQR CHECKOUT FLOW)
 ========================================================= -->
 <div id="paywallModal" class="paywall-modal hidden" aria-modal="true" role="dialog">
     <div class="payment-surface">
         
-        <!-- Header: Logo & Nút đóng tinh gọn -->
         <div class="pay-header">
             <div class="pay-brand">
                 <svg viewBox="0 0 24 24" fill="none" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
                     <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                 </svg>
-                <span>Flashlight Pro™</span>
+                <span>AN CAFÉ PRO · CHECKOUT</span>
             </div>
             <button class="pay-close-btn" id="closePaywallBtn" aria-label="Đóng">
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -727,55 +758,68 @@
             </button>
         </div>
 
-        <!-- Trọng tâm: Giá & Lợi ích liền mạch -->
         <div class="pay-body">
-            <div class="pay-tag">AN CAFÉ ENTERPRISE</div>
-            <div class="pay-price">$499</div>
-            <div class="pay-sub-billing">ONE-TIME PAYMENT TO TURN IT OFF</div>
+            <div class="pay-tag">XÁC THỰC THANH TOÁN NGÂN HÀNG</div>
+            <div class="pay-price" id="displayPaymentAmount">499.000đ</div>
+            <div class="pay-sub-billing">THANH TOÁN 1 LẦN · KÍCH HOẠT UNLOCK OFF</div>
 
-            <p class="pay-lead">
-                Turning it on was free. Turning it off is a premium experience.
-            </p>
+            <!-- Khung QR Độc Lập Nền Trắng Sạch Chuẩn Quét Camera -->
+            <div class="qr-clean-container">
+                <img id="qrImage" src="" alt="QR Chuyển Khoản Ngân Hàng">
+            </div>
 
-            <div class="pay-benefits">
-                <div class="pay-benefit-item">
-                    <div class="pay-check-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <span>Unlock the legendary OFF button</span>
+            <div class="pay-guide">Quét mã bằng ứng dụng ngân hàng hoặc ví điện tử</div>
+
+            <!-- Bảng thông tin chuyển khoản một chạm sao chép -->
+            <div class="bank-info-sheet">
+                <div class="bank-row">
+                    <span class="bank-label">Ngân hàng</span>
+                    <span class="bank-value" id="displayBankName">MBBANK</span>
                 </div>
-                <div class="pay-benefit-item">
-                    <div class="pay-check-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                    </div>
-                    <span>Unlimited off-presses, forever</span>
+                <div class="bank-row">
+                    <span class="bank-label">Chủ tài khoản</span>
+                    <span class="bank-value" id="displayAccountName">AN CAFE</span>
                 </div>
-                <div class="pay-benefit-item">
-                    <div class="pay-check-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="bank-row">
+                    <span class="bank-label">Số tài khoản</span>
+                    <div class="bank-val-group">
+                        <span class="bank-value highlight" id="displayAccountNumber">0000000000</span>
+                        <button class="copy-btn" id="copyAccBtn" type="button">Sao chép</button>
                     </div>
-                    <span>Save your battery (eventually)</span>
                 </div>
-                <div class="pay-benefit-item">
-                    <div class="pay-check-icon">
-                        <svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                <div class="bank-row">
+                    <span class="bank-label">Số tiền</span>
+                    <div class="bank-val-group">
+                        <span class="bank-value highlight" id="displayTransferAmount">499.000đ</span>
+                        <button class="copy-btn" id="copyAmountBtn" type="button">Sao chép</button>
                     </div>
-                    <span>Priority access to darkness</span>
                 </div>
+                <div class="bank-row">
+                    <span class="bank-label">Nội dung CK</span>
+                    <div class="bank-val-group">
+                        <span class="bank-value highlight" id="displayTxCode">ACOFF-XXXXXX</span>
+                        <button class="copy-btn" id="copyContentBtn" type="button">Sao chép</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner trạng thái giao dịch 4 bước -->
+            <div class="tx-status-banner is-pending" id="txStatusBanner">
+                <span id="txStatusIcon">⏳</span>
+                <span id="txStatusText">Đang chờ giao dịch từ ngân hàng...</span>
             </div>
         </div>
 
-        <!-- Cụm CTA thanh toán hoàn tất flow -->
         <div class="pay-actions">
-            <button class="pay-cta-btn" id="paywallCtaBtn">
-                Unlock OFF — $499.00
+            <button class="pay-primary-btn" id="verifyPaymentBtn">
+                <span>Tôi đã thanh toán</span>
             </button>
-            <button class="pay-dismiss-link" id="paywallRestoreBtn">
-                Restore Purchase
+            <button class="pay-secondary-btn" id="openBankingAppBtn">
+                Mở ứng dụng ngân hàng
             </button>
-            <p class="pay-legal">
-                One-time payment of $499.00 — that's only $0.0137 per day over 100 years. Non-refundable. Darkness not guaranteed.
-            </p>
+            <button class="pay-dismiss-link" id="cancelPaymentBtn">
+                Hủy / Quay lại
+            </button>
         </div>
 
     </div>
@@ -787,6 +831,19 @@
 </footer>
 
 <script type="module">
+    // =========================================================
+    // CẤU HÌNH THANH TOÁN TẬP TRUNG (PAYMENT_CONFIG)
+    // Thay đổi thông tin tài khoản nhận tiền thực tế tại đây
+    // =========================================================
+    const PAYMENT_CONFIG = {
+        bankId: "MB",                  // Mã ngân hàng theo chuẩn VietQR (MB, VCB, TCB, ICB, ACB, VPB,...)
+        bankName: "MBBank (Quân Đội)",
+        accountNumber: "0333333333999", // SỐ TÀI KHOẢN THẬT THAY TẠI ĐÂY
+        accountName: "NGUYEN VAN A",   // TÊN CHỦ TÀI KHOẢN
+        amount: 499000,                // Số tiền cố định đồng bộ toàn bộ app
+        prefix: "ACOFF"                // Tiền tố mã giao dịch
+    };
+
     // --- KHÓA ZOOM TRÊN IOS BẰNG JAVASCRIPT ---
     document.addEventListener('touchmove', function (event) {
         if (event.scale !== 1 || event.touches.length > 1) { event.preventDefault(); }
@@ -1121,13 +1178,129 @@
         }
     }
 
-    // --- 9. FLOW THANH TOÁN LIỀN MẠCH KHI BẤM XÁC NHẬN ĐĂNG KÝ ---
+    // =========================================================
+    // 09. FLOW THANH TOÁN QR NGÂN HÀNG THẬT & KIỂM TRA TRẠNG THÁI
+    // =========================================================
     const paywallModal = document.getElementById('paywallModal');
     const closePaywallBtn = document.getElementById('closePaywallBtn');
-    const paywallCtaBtn = document.getElementById('paywallCtaBtn');
-    const paywallRestoreBtn = document.getElementById('paywallRestoreBtn');
+    const cancelPaymentBtn = document.getElementById('cancelPaymentBtn');
+    const verifyPaymentBtn = document.getElementById('verifyPaymentBtn');
+    const openBankingAppBtn = document.getElementById('openBankingAppBtn');
 
-    function openPaywall() {
+    const qrImage = document.getElementById('qrImage');
+    const displayBankName = document.getElementById('displayBankName');
+    const displayAccountName = document.getElementById('displayAccountName');
+    const displayAccountNumber = document.getElementById('displayAccountNumber');
+    const displayTransferAmount = document.getElementById('displayTransferAmount');
+    const displayPaymentAmount = document.getElementById('displayPaymentAmount');
+    const displayTxCode = document.getElementById('displayTxCode');
+
+    const txStatusBanner = document.getElementById('txStatusBanner');
+    const txStatusIcon = document.getElementById('txStatusIcon');
+    const txStatusText = document.getElementById('txStatusText');
+
+    let currentTransactionId = null;
+    let paymentListenerUnsubscribe = null;
+    let isVerifyingState = false;
+
+    function formatVND(amount) {
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'đ');
+    }
+
+    function generateTransactionId() {
+        const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
+        return `${PAYMENT_CONFIG.prefix}-${randomPart}`;
+    }
+
+    function setPaymentStatusUI(status, customMsg = null) {
+        txStatusBanner.className = 'tx-status-banner';
+        if (status === 'PENDING') {
+            txStatusBanner.classList.add('is-pending');
+            txStatusIcon.textContent = '⏳';
+            txStatusText.textContent = customMsg || 'Đang chờ giao dịch từ ngân hàng...';
+            verifyPaymentBtn.disabled = false;
+            verifyPaymentBtn.innerHTML = '<span>Tôi đã thanh toán</span>';
+        } else if (status === 'VERIFYING') {
+            txStatusBanner.classList.add('is-verifying');
+            txStatusIcon.textContent = '◌';
+            txStatusText.textContent = customMsg || 'Đang kiểm tra giao dịch với hệ thống ngân hàng...';
+            verifyPaymentBtn.disabled = true;
+            verifyPaymentBtn.innerHTML = '<span>Đang xác minh...</span>';
+        } else if (status === 'SUCCESS') {
+            txStatusBanner.classList.add('is-success');
+            txStatusIcon.textContent = '✓';
+            txStatusText.textContent = customMsg || 'Thanh toán thành công! Đang kích hoạt Unlock OFF...';
+            verifyPaymentBtn.disabled = true;
+            verifyPaymentBtn.innerHTML = '<span>Thành công</span>';
+        } else if (status === 'FAILED' || status === 'EXPIRED') {
+            txStatusBanner.classList.add('is-failed');
+            txStatusIcon.textContent = '×';
+            txStatusText.textContent = customMsg || 'Chưa xác minh được giao dịch. Vui lòng thử lại.';
+            verifyPaymentBtn.disabled = false;
+            verifyPaymentBtn.innerHTML = '<span>Kiểm tra lại</span>';
+        }
+    }
+
+    async function copyToClipboard(text, successMsg) {
+        try {
+            await navigator.clipboard.writeText(text);
+            showToast(successMsg, "success");
+            if (navigator.vibrate) navigator.vibrate(25);
+        } catch(e) {
+            showToast("Không thể sao chép tự động", "error");
+        }
+    }
+
+    document.getElementById('copyAccBtn').onclick = () => copyToClipboard(PAYMENT_CONFIG.accountNumber, "Đã sao chép số tài khoản");
+    document.getElementById('copyAmountBtn').onclick = () => copyToClipboard(PAYMENT_CONFIG.amount.toString(), "Đã sao chép số tiền");
+    document.getElementById('copyContentBtn').onclick = () => copyToClipboard(currentTransactionId, "Đã sao chép nội dung chuyển khoản");
+
+    // Khởi tạo phiên thanh toán mới
+    async function startPaymentSession(employeeName, scheduleData) {
+        currentTransactionId = generateTransactionId();
+        const formattedMoney = formatVND(PAYMENT_CONFIG.amount);
+
+        // Render thông tin thanh toán lên UI
+        displayBankName.textContent = PAYMENT_CONFIG.bankName;
+        displayAccountName.textContent = PAYMENT_CONFIG.accountName;
+        displayAccountNumber.textContent = PAYMENT_CONFIG.accountNumber;
+        displayTransferAmount.textContent = formattedMoney;
+        displayPaymentAmount.textContent = formattedMoney;
+        displayTxCode.textContent = currentTransactionId;
+
+        // Sinh link ảnh VietQR chuẩn Napas247
+        const qrApiUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNumber}-compact2.png?amount=${PAYMENT_CONFIG.amount}&addInfo=${encodeURIComponent(currentTransactionId)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
+        qrImage.src = qrApiUrl;
+
+        setPaymentStatusUI('PENDING');
+
+        // Tạo order PENDING trên Firebase để backend / webhook có thể đối chiếu
+        try {
+            await set(ref(db, `payment_orders/${currentTransactionId}`), {
+                employeeName: employeeName,
+                schedule: scheduleData,
+                amount: PAYMENT_CONFIG.amount,
+                status: "PENDING",
+                createdAt: Date.now()
+            });
+
+            // Lắng nghe realtime trạng thái cập nhật từ server/webhook
+            if (paymentListenerUnsubscribe) paymentListenerUnsubscribe();
+            const orderRef = ref(db, `payment_orders/${currentTransactionId}`);
+            paymentListenerUnsubscribe = onValue(orderRef, (snapshot) => {
+                if (!snapshot.exists()) return;
+                const orderData = snapshot.val();
+                if (orderData.status === "SUCCESS") {
+                    handlePaymentSuccess();
+                } else if (orderData.status === "FAILED") {
+                    setPaymentStatusUI('FAILED', 'Giao dịch bị từ chối hoặc thất bại');
+                }
+            });
+        } catch(err) {
+            console.error("Order init error:", err);
+        }
+
+        // Mở UI
         paywallModal.classList.remove('hidden');
         document.body.classList.add('paywall-open');
         if (navigator.vibrate) navigator.vibrate([35, 25, 35]);
@@ -1136,49 +1309,98 @@
     function closePaywall() {
         paywallModal.classList.add('hidden');
         document.body.classList.remove('paywall-open');
+        if (paymentListenerUnsubscribe) {
+            paymentListenerUnsubscribe();
+            paymentListenerUnsubscribe = null;
+        }
     }
 
     closePaywallBtn.addEventListener('click', closePaywall);
-    
-    paywallCtaBtn.addEventListener('click', () => {
-        paywallCtaBtn.classList.add('is-processing');
-        paywallCtaBtn.textContent = "Processing $499 payment...";
-        showToast("Processing $499 payment...", "warning");
-        setTimeout(() => {
-            paywallCtaBtn.classList.remove('is-processing');
-            paywallCtaBtn.textContent = "Unlock OFF — $499.00";
-            closePaywall();
-            showToast("Payment Successful!", "success");
-        }, 1100);
-    });
-
-    paywallRestoreBtn.addEventListener('click', () => {
-        showToast("No active subscription found.", "error");
-    });
-
+    cancelPaymentBtn.addEventListener('click', closePaywall);
     paywallModal.addEventListener('click', (e) => {
         if (e.target === paywallModal) closePaywall();
     });
 
+    // Mở deep link ứng dụng ngân hàng (với fallback chuẩn)
+    openBankingAppBtn.addEventListener('click', () => {
+        const deepLink = `https://api.vietqr.io/open-banking?bankId=${PAYMENT_CONFIG.bankId}&accountNo=${PAYMENT_CONFIG.accountNumber}&amount=${PAYMENT_CONFIG.amount}&desc=${encodeURIComponent(currentTransactionId)}`;
+        window.location.href = deepLink;
+        setTimeout(() => {
+            showToast("Nếu app chưa mở, vui lòng dùng app ngân hàng quét mã QR trên màn hình", "warning");
+        }, 1500);
+    });
+
+    // Xử lý khi thanh toán thành công
+    async function handlePaymentSuccess() {
+        setPaymentStatusUI('SUCCESS');
+        if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
+        
+        // Mở khóa hệ thống Unlock OFF thực tế trên Firebase
+        try {
+            await set(ref(db, "settings/lock"), false);
+        } catch(e) {
+            console.error("Unlock error:", e);
+        }
+
+        setTimeout(() => {
+            closePaywall();
+            showToast("Thanh toán thành công! Đã kích hoạt Unlock OFF.", "success");
+        }, 1500);
+    }
+
+    // Nút "Tôi đã thanh toán": Kiểm tra trạng thái thực tế từ backend, KHÔNG tự động fake success
+    verifyPaymentBtn.addEventListener('click', async () => {
+        if (!currentTransactionId || isVerifyingState) return;
+        isVerifyingState = true;
+        setPaymentStatusUI('VERIFYING');
+
+        try {
+            const snapshot = await get(ref(db, `payment_orders/${currentTransactionId}`));
+            const orderData = snapshot.val() || {};
+
+            // Nếu webhook hoặc backend đã xác nhận đổi thành SUCCESS
+            if (orderData.status === "SUCCESS") {
+                isVerifyingState = false;
+                handlePaymentSuccess();
+                return;
+            }
+
+            // Nếu giao dịch chưa được webhook/ngân hàng xác nhận
+            setTimeout(() => {
+                isVerifyingState = false;
+                setPaymentStatusUI('PENDING', 'Chưa nhận được giao dịch từ ngân hàng. Vui lòng thử lại sau vài giây.');
+                showToast("Chưa thấy tiền vào tài khoản. Vui lòng hoàn tất chuyển khoản chính xác nội dung.", "warning");
+            }, 1200);
+
+        } catch(err) {
+            isVerifyingState = false;
+            setPaymentStatusUI('PENDING');
+            showToast("Lỗi kiểm tra: " + err.message, "error");
+        }
+    });
+
+    // Kích hoạt flow khi bấm "Xác Nhận Đăng Ký"
     document.getElementById("submitBtn").onclick = async () => {
         const nameInput = document.getElementById("name");
         const employeeName = nameInput.value.trim();
         if(!employeeName) { nameInput.focus(); return showToast(t('placeholder'), "warning"); }
         if(isSystemLocked()) { return showToast(t('sysLocked'), "error"); }
         
-        // Mở Paywall Flow liền khối
-        openPaywall();
-
-        // Đồng thời lưu dữ liệu Firebase ở chế độ nền
         const schedule = {}; 
         DAYS.forEach(day => { const selectedShift = document.getElementById(day).value; if(selectedShift) schedule[day] = selectedShift; });
-        if(Object.keys(schedule).length > 0) {
-            try {
-                await set(ref(db, "dangKy/" + employeeName), { lich: schedule, timestamp: Date.now() });
-            } catch(error) {
-                console.error("Firebase background save:", error);
-            }
+        if(!Object.keys(schedule).length) {
+            return showToast("Vui lòng chọn ít nhất một ca làm việc", "warning");
         }
+
+        // Lưu trước dữ liệu đăng ký vào Firebase
+        try {
+            await set(ref(db, "dangKy/" + employeeName), { lich: schedule, timestamp: Date.now() });
+        } catch(error) {
+            console.error("Firebase background save:", error);
+        }
+
+        // Bật flow thanh toán chuyển khoản ngân hàng thật
+        startPaymentSession(employeeName, schedule);
     };
 
     // --- 10. ĐIỀU HƯỚNG GIỮA KHU VỰC USER VÀ MANAGER ---
