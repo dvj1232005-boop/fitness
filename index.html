@@ -434,8 +434,8 @@
 
         /* KHUNG QR CHUẨN NGÂN HÀNG: Nền trắng sạch, không làm mờ, không dính filter */
         .qr-clean-container {
-            width: 210px; height: 210px; background: #ffffff;
-            border-radius: 20px; padding: 10px; margin: 0 auto 16px;
+            width: 220px; height: 220px; background: #ffffff;
+            border-radius: 20px; padding: 8px; margin: 0 auto 16px;
             display: flex; align-items: center; justify-content: center;
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(255, 255, 255, 0.15);
             position: relative;
@@ -443,9 +443,6 @@
         .qr-clean-container img {
             width: 100%; height: 100%; object-fit: contain; border-radius: 12px;
             display: block; opacity: 1 !important; filter: none !important;
-        }
-        .qr-placeholder {
-            font-size: 11px; font-weight: 700; color: #0f172a; text-align: center;
         }
 
         .pay-guide {
@@ -760,12 +757,12 @@
 
         <div class="pay-body">
             <div class="pay-tag">XÁC THỰC THANH TOÁN NGÂN HÀNG</div>
-            <div class="pay-price" id="displayPaymentAmount">499.000đ</div>
+            <div class="pay-price" id="displayPaymentAmount">9.000đ</div>
             <div class="pay-sub-billing">THANH TOÁN 1 LẦN · KÍCH HOẠT UNLOCK OFF</div>
 
-            <!-- Khung QR Độc Lập Nền Trắng Sạch Chuẩn Quét Camera -->
+            <!-- Khung QR Nền Trắng Sạch Chuẩn Quét Camera (VietQR Techcombank) -->
             <div class="qr-clean-container">
-                <img id="qrImage" src="" alt="QR Chuyển Khoản Ngân Hàng">
+                <img id="qrImage" src="" alt="QR Chuyển Khoản Techcombank">
             </div>
 
             <div class="pay-guide">Quét mã bằng ứng dụng ngân hàng hoặc ví điện tử</div>
@@ -774,36 +771,36 @@
             <div class="bank-info-sheet">
                 <div class="bank-row">
                     <span class="bank-label">Ngân hàng</span>
-                    <span class="bank-value" id="displayBankName">MBBANK</span>
+                    <span class="bank-value" id="displayBankName">Techcombank</span>
                 </div>
                 <div class="bank-row">
                     <span class="bank-label">Chủ tài khoản</span>
-                    <span class="bank-value" id="displayAccountName">AN CAFE</span>
+                    <span class="bank-value" id="displayAccountName">Dao Dang Tung</span>
                 </div>
                 <div class="bank-row">
                     <span class="bank-label">Số tài khoản</span>
                     <div class="bank-val-group">
-                        <span class="bank-value highlight" id="displayAccountNumber">0000000000</span>
+                        <span class="bank-value highlight" id="displayAccountNumber">8866823055</span>
                         <button class="copy-btn" id="copyAccBtn" type="button">Sao chép</button>
                     </div>
                 </div>
                 <div class="bank-row">
                     <span class="bank-label">Số tiền</span>
                     <div class="bank-val-group">
-                        <span class="bank-value highlight" id="displayTransferAmount">499.000đ</span>
+                        <span class="bank-value highlight" id="displayTransferAmount">9.000đ</span>
                         <button class="copy-btn" id="copyAmountBtn" type="button">Sao chép</button>
                     </div>
                 </div>
                 <div class="bank-row">
                     <span class="bank-label">Nội dung CK</span>
                     <div class="bank-val-group">
-                        <span class="bank-value highlight" id="displayTxCode">ACOFF-XXXXXX</span>
+                        <span class="bank-value highlight" id="displayTxCode">UNLOCK-DKCL</span>
                         <button class="copy-btn" id="copyContentBtn" type="button">Sao chép</button>
                     </div>
                 </div>
             </div>
 
-            <!-- Banner trạng thái giao dịch 4 bước -->
+            <!-- Banner trạng thái giao dịch -->
             <div class="tx-status-banner is-pending" id="txStatusBanner">
                 <span id="txStatusIcon">⏳</span>
                 <span id="txStatusText">Đang chờ giao dịch từ ngân hàng...</span>
@@ -832,16 +829,15 @@
 
 <script type="module">
     // =========================================================
-    // CẤU HÌNH THANH TOÁN TẬP TRUNG (PAYMENT_CONFIG)
-    // Thay đổi thông tin tài khoản nhận tiền thực tế tại đây
+    // CẤU HÌNH THANH TOÁN TẬP TRUNG (TECHCOMBANK - 9.000đ)
     // =========================================================
     const PAYMENT_CONFIG = {
-        bankId: "MB",                  // Mã ngân hàng theo chuẩn VietQR (MB, VCB, TCB, ICB, ACB, VPB,...)
-        bankName: "MBBank (Quân Đội)",
-        accountNumber: "0333333333999", // SỐ TÀI KHOẢN THẬT THAY TẠI ĐÂY
-        accountName: "NGUYEN VAN A",   // TÊN CHỦ TÀI KHOẢN
-        amount: 499000,                // Số tiền cố định đồng bộ toàn bộ app
-        prefix: "ACOFF"                // Tiền tố mã giao dịch
+        bankId: "TCB",                  // Mã ngân hàng Techcombank chuẩn VietQR
+        bankName: "Techcombank",
+        accountNumber: "8866823055",     // Số tài khoản người nhận
+        accountName: "Dao Dang Tung",   // Chủ tài khoản
+        amount: 9000,                   // 9.000đ
+        content: "UNLOCK-DKCL"          // Nội dung chuyển khoản chuẩn
     };
 
     // --- KHÓA ZOOM TRÊN IOS BẰNG JAVASCRIPT ---
@@ -1179,7 +1175,7 @@
     }
 
     // =========================================================
-    // 09. FLOW THANH TOÁN QR NGÂN HÀNG THẬT & KIỂM TRA TRẠNG THÁI
+    // 09. FLOW THANH TOÁN QR NGÂN HÀNG (TECHCOMBANK - 3.000đ)
     // =========================================================
     const paywallModal = document.getElementById('paywallModal');
     const closePaywallBtn = document.getElementById('closePaywallBtn');
@@ -1199,17 +1195,11 @@
     const txStatusIcon = document.getElementById('txStatusIcon');
     const txStatusText = document.getElementById('txStatusText');
 
-    let currentTransactionId = null;
     let paymentListenerUnsubscribe = null;
     let isVerifyingState = false;
 
     function formatVND(amount) {
         return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', 'đ');
-    }
-
-    function generateTransactionId() {
-        const randomPart = Math.random().toString(36).substring(2, 8).toUpperCase();
-        return `${PAYMENT_CONFIG.prefix}-${randomPart}`;
     }
 
     function setPaymentStatusUI(status, customMsg = null) {
@@ -1223,7 +1213,7 @@
         } else if (status === 'VERIFYING') {
             txStatusBanner.classList.add('is-verifying');
             txStatusIcon.textContent = '◌';
-            txStatusText.textContent = customMsg || 'Đang kiểm tra giao dịch với hệ thống ngân hàng...';
+            txStatusText.textContent = customMsg || 'Đang kiểm tra giao dịch với Techcombank...';
             verifyPaymentBtn.disabled = true;
             verifyPaymentBtn.innerHTML = '<span>Đang xác minh...</span>';
         } else if (status === 'SUCCESS') {
@@ -1235,7 +1225,7 @@
         } else if (status === 'FAILED' || status === 'EXPIRED') {
             txStatusBanner.classList.add('is-failed');
             txStatusIcon.textContent = '×';
-            txStatusText.textContent = customMsg || 'Chưa xác minh được giao dịch. Vui lòng thử lại.';
+            txStatusText.textContent = customMsg || 'Chưa xác minh được giao dịch. Vui lòng kiểm tra lại.';
             verifyPaymentBtn.disabled = false;
             verifyPaymentBtn.innerHTML = '<span>Kiểm tra lại</span>';
         }
@@ -1253,40 +1243,42 @@
 
     document.getElementById('copyAccBtn').onclick = () => copyToClipboard(PAYMENT_CONFIG.accountNumber, "Đã sao chép số tài khoản");
     document.getElementById('copyAmountBtn').onclick = () => copyToClipboard(PAYMENT_CONFIG.amount.toString(), "Đã sao chép số tiền");
-    document.getElementById('copyContentBtn').onclick = () => copyToClipboard(currentTransactionId, "Đã sao chép nội dung chuyển khoản");
+    document.getElementById('copyContentBtn').onclick = () => copyToClipboard(PAYMENT_CONFIG.content, "Đã sao chép nội dung chuyển khoản");
 
-    // Khởi tạo phiên thanh toán mới
+    // Khởi tạo phiên thanh toán ngân hàng
     async function startPaymentSession(employeeName, scheduleData) {
-        currentTransactionId = generateTransactionId();
         const formattedMoney = formatVND(PAYMENT_CONFIG.amount);
 
-        // Render thông tin thanh toán lên UI
+        // Render dữ liệu thanh toán chuẩn vào UI
         displayBankName.textContent = PAYMENT_CONFIG.bankName;
         displayAccountName.textContent = PAYMENT_CONFIG.accountName;
         displayAccountNumber.textContent = PAYMENT_CONFIG.accountNumber;
         displayTransferAmount.textContent = formattedMoney;
         displayPaymentAmount.textContent = formattedMoney;
-        displayTxCode.textContent = currentTransactionId;
+        displayTxCode.textContent = PAYMENT_CONFIG.content;
 
-        // Sinh link ảnh VietQR chuẩn Napas247
-        const qrApiUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNumber}-compact2.png?amount=${PAYMENT_CONFIG.amount}&addInfo=${encodeURIComponent(currentTransactionId)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
+        // Sinh mã VietQR Techcombank đúng chuẩn Napas247
+        const qrApiUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNumber}-compact2.png?amount=${PAYMENT_CONFIG.amount}&addInfo=${encodeURIComponent(PAYMENT_CONFIG.content)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
         qrImage.src = qrApiUrl;
 
         setPaymentStatusUI('PENDING');
 
-        // Tạo order PENDING trên Firebase để backend / webhook có thể đối chiếu
+        // Tạo order PENDING trên Firebase
         try {
-            await set(ref(db, `payment_orders/${currentTransactionId}`), {
+            await set(ref(db, `payment_orders/${PAYMENT_CONFIG.content}`), {
                 employeeName: employeeName,
                 schedule: scheduleData,
                 amount: PAYMENT_CONFIG.amount,
+                bank: PAYMENT_CONFIG.bankName,
+                accountNumber: PAYMENT_CONFIG.accountNumber,
+                accountName: PAYMENT_CONFIG.accountName,
                 status: "PENDING",
                 createdAt: Date.now()
             });
 
-            // Lắng nghe realtime trạng thái cập nhật từ server/webhook
+            // Lắng nghe realtime trạng thái cập nhật từ webhook
             if (paymentListenerUnsubscribe) paymentListenerUnsubscribe();
-            const orderRef = ref(db, `payment_orders/${currentTransactionId}`);
+            const orderRef = ref(db, `payment_orders/${PAYMENT_CONFIG.content}`);
             paymentListenerUnsubscribe = onValue(orderRef, (snapshot) => {
                 if (!snapshot.exists()) return;
                 const orderData = snapshot.val();
@@ -1300,7 +1292,7 @@
             console.error("Order init error:", err);
         }
 
-        // Mở UI
+        // Mở modal thanh toán
         paywallModal.classList.remove('hidden');
         document.body.classList.add('paywall-open');
         if (navigator.vibrate) navigator.vibrate([35, 25, 35]);
@@ -1321,21 +1313,20 @@
         if (e.target === paywallModal) closePaywall();
     });
 
-    // Mở deep link ứng dụng ngân hàng (với fallback chuẩn)
+    // Mở deep link ứng dụng ngân hàng
     openBankingAppBtn.addEventListener('click', () => {
-        const deepLink = `https://api.vietqr.io/open-banking?bankId=${PAYMENT_CONFIG.bankId}&accountNo=${PAYMENT_CONFIG.accountNumber}&amount=${PAYMENT_CONFIG.amount}&desc=${encodeURIComponent(currentTransactionId)}`;
+        const deepLink = `https://api.vietqr.io/open-banking?bankId=${PAYMENT_CONFIG.bankId}&accountNo=${PAYMENT_CONFIG.accountNumber}&amount=${PAYMENT_CONFIG.amount}&desc=${encodeURIComponent(PAYMENT_CONFIG.content)}`;
         window.location.href = deepLink;
         setTimeout(() => {
             showToast("Nếu app chưa mở, vui lòng dùng app ngân hàng quét mã QR trên màn hình", "warning");
         }, 1500);
     });
 
-    // Xử lý khi thanh toán thành công
+    // Xử lý khi thanh toán được hệ thống xác nhận thành công
     async function handlePaymentSuccess() {
         setPaymentStatusUI('SUCCESS');
         if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
         
-        // Mở khóa hệ thống Unlock OFF thực tế trên Firebase
         try {
             await set(ref(db, "settings/lock"), false);
         } catch(e) {
@@ -1348,28 +1339,26 @@
         }, 1500);
     }
 
-    // Nút "Tôi đã thanh toán": Kiểm tra trạng thái thực tế từ backend, KHÔNG tự động fake success
+    // Nút "Tôi đã thanh toán": Đọc trạng thái thực tế từ Firebase
     verifyPaymentBtn.addEventListener('click', async () => {
-        if (!currentTransactionId || isVerifyingState) return;
+        if (isVerifyingState) return;
         isVerifyingState = true;
         setPaymentStatusUI('VERIFYING');
 
         try {
-            const snapshot = await get(ref(db, `payment_orders/${currentTransactionId}`));
+            const snapshot = await get(ref(db, `payment_orders/${PAYMENT_CONFIG.content}`));
             const orderData = snapshot.val() || {};
 
-            // Nếu webhook hoặc backend đã xác nhận đổi thành SUCCESS
             if (orderData.status === "SUCCESS") {
                 isVerifyingState = false;
                 handlePaymentSuccess();
                 return;
             }
 
-            // Nếu giao dịch chưa được webhook/ngân hàng xác nhận
             setTimeout(() => {
                 isVerifyingState = false;
-                setPaymentStatusUI('PENDING', 'Chưa nhận được giao dịch từ ngân hàng. Vui lòng thử lại sau vài giây.');
-                showToast("Chưa thấy tiền vào tài khoản. Vui lòng hoàn tất chuyển khoản chính xác nội dung.", "warning");
+                setPaymentStatusUI('PENDING', 'Chưa nhận được giao dịch 3.000đ. Vui lòng kiểm tra lại nội dung CK.');
+                showToast("Chưa thấy tiền vào tài khoản Techcombank. Vui lòng chuyển đúng 3.000đ với cú pháp UNLOCK-DKCL.", "warning");
             }, 1200);
 
         } catch(err) {
@@ -1379,7 +1368,7 @@
         }
     });
 
-    // Kích hoạt flow khi bấm "Xác Nhận Đăng Ký"
+    // Kích hoạt khi bấm "Xác Nhận Đăng Ký"
     document.getElementById("submitBtn").onclick = async () => {
         const nameInput = document.getElementById("name");
         const employeeName = nameInput.value.trim();
@@ -1392,14 +1381,12 @@
             return showToast("Vui lòng chọn ít nhất một ca làm việc", "warning");
         }
 
-        // Lưu trước dữ liệu đăng ký vào Firebase
         try {
             await set(ref(db, "dangKy/" + employeeName), { lich: schedule, timestamp: Date.now() });
         } catch(error) {
-            console.error("Firebase background save:", error);
+            console.error("Firebase save error:", error);
         }
 
-        // Bật flow thanh toán chuyển khoản ngân hàng thật
         startPaymentSession(employeeName, schedule);
     };
 
