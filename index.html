@@ -840,6 +840,12 @@
         content: "UNLOCK-DKCL"          // Nội dung chuyển khoản chuẩn
     };
 
+    // Lưu tạm thông tin người đăng ký trong phiên thanh toán hiện tại
+    let pendingRegistration = {
+        employeeName: "",
+        schedule: null
+    };
+
     // --- KHÓA ZOOM TRÊN IOS BẰNG JAVASCRIPT ---
     document.addEventListener('touchmove', function (event) {
         if (event.scale !== 1 || event.touches.length > 1) { event.preventDefault(); }
@@ -1247,6 +1253,9 @@
 
     // Khởi tạo phiên thanh toán ngân hàng
     async function startPaymentSession(employeeName, scheduleData) {
+        pendingRegistration.employeeName = employeeName;
+        pendingRegistration.schedule = scheduleData;
+
         const formattedMoney = formatVND(PAYMENT_CONFIG.amount);
 
         // Render dữ liệu thanh toán chuẩn vào UI
@@ -1257,13 +1266,13 @@
         displayPaymentAmount.textContent = formattedMoney;
         displayTxCode.textContent = PAYMENT_CONFIG.content;
 
-        // Sinh mã VietQR Techcombank đúng chuẩn Napas247
+        // Sinh mã VietQR Techcombank đúng chuẩn Napas247[cite: 2]
         const qrApiUrl = `https://img.vietqr.io/image/${PAYMENT_CONFIG.bankId}-${PAYMENT_CONFIG.accountNumber}-compact2.png?amount=${PAYMENT_CONFIG.amount}&addInfo=${encodeURIComponent(PAYMENT_CONFIG.content)}&accountName=${encodeURIComponent(PAYMENT_CONFIG.accountName)}`;
         qrImage.src = qrApiUrl;
 
         setPaymentStatusUI('PENDING');
 
-        // Tạo order PENDING trên Firebase
+        // Tạo order PENDING trên Firebase (CHƯA lưu vào node dangKy)
         try {
             await set(ref(db, `payment_orders/${PAYMENT_CONFIG.content}`), {
                 employeeName: employeeName,
@@ -1313,12 +1322,11 @@
         if (e.target === paywallModal) closePaywall();
     });
 
-    // Mở deep link ứng dụng ngân hàng
+    // Mở trực tiếp ứng dụng Techcombank qua link https://dl.vietqr.io/pay?app=tcb
     openBankingAppBtn.addEventListener('click', () => {
-        const deepLink = `https://api.vietqr.io/open-banking?bankId=${PAYMENT_CONFIG.bankId}&accountNo=${PAYMENT_CONFIG.accountNumber}&amount=${PAYMENT_CONFIG.amount}&desc=${encodeURIComponent(PAYMENT_CONFIG.content)}`;
-        window.location.href = deepLink;
+        window.location.href = "https://dl.vietqr.io/pay?app=tcb";
         setTimeout(() => {
-            showToast("Nếu app chưa mở, vui lòng dùng app ngân hàng quét mã QR trên màn hình", "warning");
+            showToast("Nếu chưa mở được app, vui lòng quét mã QR trên màn hình", "warning");
         }, 1500);
     });
 
@@ -1328,14 +1336,29 @@
         if (navigator.vibrate) navigator.vibrate([80, 50, 80]);
         
         try {
+            // 1. Chỉ lưu vào danh sách đăng ký khi thanh toán thành công
+            if (pendingRegistration.employeeName && pendingRegistration.schedule) {
+                await set(ref(db, "dangKy/" + pendingRegistration.employeeName), { 
+                    lich: pendingRegistration.schedule, 
+                    timestamp: Date.now() 
+                });
+            }
+            // 2. Mở khóa hệ thống Unlock OFF
             await set(ref(db, "settings/lock"), false);
         } catch(e) {
-            console.error("Unlock error:", e);
+            console.error("Save / Unlock error:", e);
         }
 
         setTimeout(() => {
             closePaywall();
-            showToast("Thanh toán thành công! Đã kích hoạt Unlock OFF.", "success");
+            showToast("Thanh toán thành công! Đã lưu ca và kích hoạt Unlock OFF.", "success");
+            // Reset form sau khi hoàn tất
+            document.getElementById("name").value = "";
+            DAYS.forEach(day => {
+                document.getElementById(day).value = "";
+                document.getElementById('text_' + day).innerText = t('off');
+                document.querySelector(`#dropdown_${day} .dropdown-selected`).className = 'dropdown-selected';
+            });
         }, 1500);
     }
 
@@ -1381,12 +1404,7 @@
             return showToast("Vui lòng chọn ít nhất một ca làm việc", "warning");
         }
 
-        try {
-            await set(ref(db, "dangKy/" + employeeName), { lich: schedule, timestamp: Date.now() });
-        } catch(error) {
-            console.error("Firebase save error:", error);
-        }
-
+        // Bắt đầu quy trình thanh toán (TUYỆT ĐỐI KHÔNG GHI dangKy/ TẠI ĐÂY)
         startPaymentSession(employeeName, schedule);
     };
 
